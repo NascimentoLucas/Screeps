@@ -35,6 +35,13 @@ function clean(){
 		
 		if(!Game.creeps[flag.memory.owner]){
 			flag.memory.owner = '';
+			//console.log('cleanig flag\'s owner dead');
+		}
+		else{
+			if(Game.creeps[flag.memory.owner].memory.flag != flag.name){
+				flag.memory.owner = '';				
+				//console.log('cleanig flag\'s owner change');
+			}
 		}
 	}
 	
