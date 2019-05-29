@@ -20,25 +20,14 @@ var main = {
 							return true;
 						}
 						else{
-							say(creep, 'w c' + (Game.flags[creep.memory.flag].color - 1) + ' Flag');								
+							say(creep, Game.flags[creep.memory.flag].color - 1);	
+							return Game.flags[creep.memory.flag].color > COLOR_YELLOW;							
 							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
 						}
 					}
 				}
-				else{
-					
-                    if (Game.flags[creep.memory.flag].color > COLOR_YELLOW){
-                        if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
-                            say(creep,'exit');
-                        }
-                    }
-                    else{
-						say(creep,'bye');                        
-                        cleanFlag(creep, Game.flags[creep.memory.flag]);
-                        creep.memory.flag = '';
-                        return false;
-                    }
-					
+				else{					
+                    return go_to_exit(creep);					
 				}
 				
 			}
@@ -58,7 +47,7 @@ var main = {
 					tool.moveTo(creep, Game.getObjectById(Memory.mainSpawn));
 				}
 			});
-			say(creep, 'w white Flag');
+			say(creep, 'w');
 			return true;
 		}	
 		return false;
@@ -72,10 +61,25 @@ function say(creep, msg){
 	
 }
 
+function go_to_exit(creep){
+	if (Game.flags[creep.memory.flag].color > COLOR_YELLOW){
+		if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
+			say(creep,'quiting');
+		}
+		return true;
+	}
+	else{
+		say(creep,'bye');                        
+		cleanFlag(creep, Game.flags[creep.memory.flag]);
+		creep.memory.flag = '';
+		return false;
+	}
+}
+
 function mining(creep){
 	var sources = helper.get_sources(creep);
 	if(sources){
-		say(creep,sources.pos.x +'/'+sources.pos.y);
+		//say(creep,sources.pos.x +'/'+sources.pos.y);
 		return creep.harvest(sources);
 	}
 	else{
