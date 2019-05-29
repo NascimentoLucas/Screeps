@@ -141,6 +141,7 @@ function spawn(now, numberMaxCreeps, figther) {
                 if (cont == OK)
                 {
                     console.log('Spawn: ' + n + ' ' + now + ' of ' + numberMaxCreeps);
+					console.log('++++++++++++++++++++++');
                     return true;
                 }
                 else if (cont == ERR_NAME_EXISTS)
@@ -164,7 +165,6 @@ function spawn(now, numberMaxCreeps, figther) {
 
             //console.log('feedback: ' + cont)
         }
-		console.log('++++++++++++++++++++++');
     }
     else
     {
