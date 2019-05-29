@@ -16,8 +16,8 @@ var helper = {
 		return energy;
 	},
 	get_sources(creep){
-		var sources = creep.room.find(FIND_SOURCES);
-		return sources[0];
+		var sources = creep.pos.findClosestByRange(FIND_SOURCES);
+		return sources;
 	}
 };
 

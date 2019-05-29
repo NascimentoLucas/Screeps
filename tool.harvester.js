@@ -6,7 +6,7 @@ var _FLAGNULL = '_FLAGNULL';
 var main = {
 
     /** @param {Creep} creep **/
-    get_sources: function(creep) {			
+    get_sources: function(creep) {	
 		if(Game.flags[creep.memory.flag]){
 			if(nearFlag(creep)){
 				if(creep.carry.energy < creep.carryCapacity) {
@@ -54,6 +54,7 @@ var main = {
 function mining(creep){
 	var sources = helper.get_sources(creep);
 	if(sources){
+		//creep.say(sources.pos.x +'/'+sources.pos.y);
 		return creep.harvest(sources);
 	}
 	else{

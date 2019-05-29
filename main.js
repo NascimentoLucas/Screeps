@@ -5,7 +5,7 @@ var helper = require('helper');
 
 var max_creep_harvester = 3;
 var max_creep_upgrader = 4;
-var max_creep_builder = 3;
+var max_creep_builder = 4;
 var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
 var creeps_length;
 module.exports.loop = function () {	
