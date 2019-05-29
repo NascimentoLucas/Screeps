@@ -1,12 +1,12 @@
 var tool_harvester = require('tool.harvester');
-var tool_delivery = require('tool.delivery');
+var tool_builder = require('tool.builder');
 var _HARVEST = 0;
-var _UPGRADE = 1;
+var _BUILDER = 1;
 
 var behaviour =
 [
 	harvest,
-	upgrade,
+	builder,
 ];
 
 
@@ -20,13 +20,13 @@ var main = {
 
 function harvest(creep){
 	if(!tool_harvester.get_sources(creep)){
-		creep.memory.behaviour = _UPGRADE;
-		creep.say('UPGRADE');
+		creep.memory.behaviour = _BUILDER;
+		creep.say('BUILDER');
 	}		
 }
 
-function upgrade(creep){
-	if (!tool_delivery.upgrade_center(creep)){		
+function builder(creep){
+	if (!tool_builder.builder(creep)){		
 		creep.memory.behaviour = _HARVEST;
 		creep.say('HARVEST');
 	}	

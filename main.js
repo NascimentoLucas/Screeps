@@ -1,11 +1,11 @@
 var roleHarvester = require('harvester');
 var roleUpgrader = require('upgrader');
-var roleBuilder = require('role.builder');
+var roleBuilder = require('builder');
 var helper = require('helper');
 
-var max_creep_harvester = 2;
-var max_creep_upgrader = max_creep_harvester + 2;
-var max_creep_builder = max_creep_upgrader + 2;
+var max_creep_harvester = 1;
+var max_creep_upgrader = 1;
+var max_creep_builder = 1;
 var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
 var creeps_length;
 module.exports.loop = function () {	
@@ -55,19 +55,18 @@ function behaviour_controll(creeps_length){
 	
 	var count = 0;
 	
-	max_creep = max_creep_harvester;
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 		if(count < max_creep_harvester) {
 			roleHarvester.run(creep);
 			//creep.say('h');
 		}
-		else if(count < max_creep_upgrader) {
+		else if(count < max_creep_upgrader + max_creep_harvester) {
 			roleUpgrader.run(creep);
 			//creep.say('u');
 		}
-		else if(count < max_creep_builder) {
-			//roleBuilder.run(creep);
+		else if(count < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
+			roleBuilder.run(creep);
 			//creep.say('b');
 		}
 		count++;
