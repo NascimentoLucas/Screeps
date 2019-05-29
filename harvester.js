@@ -1,4 +1,5 @@
 var tool_harvester = require('tool.harvester');
+var tool_delivery = require('tool.delivery');
 var _HARVEST = 0;
 var _DELIVERY = 1;
 
@@ -12,45 +13,21 @@ var roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.carry.energy < creep.carryCapacity) {
-			behaviour[creep.memory.behaviour](creep);
-		}
-        else {
-            behaviour[creep.memory.behaviour](creep);
-        }
+        behaviour[creep.memory.behaviour](creep);
 	}
 };
 
 function harvest(creep){
-	if(creep.carry.energy < creep.carryCapacity) {
-		tool_harvester.get_sources(creep);
-	}
-	else{
+	if(!tool_harvester.get_sources(creep)){
 		creep.memory.behaviour = _DELIVERY;
+		creep.say('DELIVERY');
 	}		
 }
 
 function delivery(creep){
-	if (creep.carry.energy > 0){
-		var targets = creep.room.find(FIND_STRUCTURES, {
-				filter: (structure) => {
-					return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-						structure.energy < structure.energyCapacity;
-				}
-		});
-		if(targets.length > 0) {
-			if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
-			}
-		}
-		else{
-			if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-			}
-		}
-	}
-	else{
+	if (!tool_delivery.delivery_sources(creep)){		
 		creep.memory.behaviour = _HARVEST;
+		creep.say('HARVEST');
 	}	
 }
 
