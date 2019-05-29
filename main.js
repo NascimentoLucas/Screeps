@@ -11,6 +11,7 @@ var max_creep_upgrader = 2;
 var max_creep_builder = 2;
 var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
 var creeps_length;
+
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
@@ -58,8 +59,8 @@ function clean(){
 				creep.say('garbage');
 				var r = creep.pickup(droppped);
 				if(r == OK){
-					console.log(creep.name + ' clean floor at: ' + droppped.pos.x + '/' 
-					+ droppped.pos.y);
+					//console.log(creep.name + ' clean floor at: ' + droppped.pos.x + '/' 
+					//+ droppped.pos.y);
 				}
 				else if(r == ERR_NOT_IN_RANGE){
 					creep.moveTo(droppped);
@@ -103,7 +104,9 @@ function behaviour_controll(creeps_length){
 	
 	for(var i = 0; i < all_creeps.length; i++){	
         var creep = Game.creeps[all_creeps[i]];
-		creep.memory.count = i;
+		
+		
+		//creep.memory.count = i;
 		if(i < max_creep_harvester) {
 			creep.say('h');			
 			roleHarvester.run(creep);

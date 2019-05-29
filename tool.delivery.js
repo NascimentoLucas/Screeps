@@ -9,8 +9,8 @@ var main = {
 		if (creep.carry.energy > 0){
 			var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: (structure) => {
-						return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-							structure.energy < structure.energyCapacity;
+						return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) 
+						&& structure.energy < structure.energyCapacity;
 					}
 			});
 			

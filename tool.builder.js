@@ -8,21 +8,23 @@ var main = {
 		if(creep.carry.energy > 0){
 			var targets = sFinderStructureRepair(creep, null)
 			if(targets != null){
-				creep.moveTo(targets, {visualizePathStyle: {stroke: '#ffffff'}});
+				
+				tool.check_above_flag(creep);
 				if(creep.repair(targets) == ERR_NOT_IN_RANGE) {
-					//creep.moveTo(targets, {visualizePathStyle: {stroke: '#ffffff'}});
+					creep.moveTo(targets, {visualizePathStyle: {stroke: '#ffffff'}});
 				}
 				return true;
 			}			
 			else {
 				targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 				if(targets.length > 0) {
-					creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
-				if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-					//creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+				
+					tool.check_above_flag(creep);
+					if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+						creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+					}
+					return true;
 				}
-				return true;
-			}
 			}
 		}
 		return false;

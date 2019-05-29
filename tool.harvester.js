@@ -16,7 +16,7 @@ var main = {
 					}
 					else if(r == ERR_NOT_IN_RANGE){					
 						if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
-							say(creep, creep.memory.count);					
+							//say(creep, creep.memory.count);					
 							return true;
 						}
 						else{
@@ -39,14 +39,8 @@ var main = {
 		}
 		else{
 			//console.log('looking for flag');
-			findFlag(creep, COLOR_WHITE);				
-			const look = creep.pos.look();
-			look.forEach(function(lookObject) {
-				if(lookObject.type == LOOK_FLAGS) {
-					console.log(creep.name + ' moving to mainSpawn');
-					tool.moveTo(creep, Game.getObjectById(Memory.mainSpawn));
-				}
-			});
+			findFlag(creep, COLOR_WHITE);
+			tool.check_above_flag(creep);
 			say(creep, 'w');
 			return true;
 		}	
@@ -55,7 +49,6 @@ var main = {
 }
 
 function say(creep, msg){
-	
 	creep.say(msg);
 	//creep.memory.msg = msg;
 	
