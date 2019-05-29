@@ -11,8 +11,27 @@ var creeps_length;
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
+	spawn_controll(creeps_length);
 	
+	behaviour_controll(creeps_length);
 	
+	clean();	
+}
+
+function spawn_creep(count){	
+	var r = get_main_spawn().spawnCreep([WORK, CARRY, MOVE], 'creep_' + count, 
+	{memory: {behaviour: 0}});
+	
+	if(r == ERR_NAME_EXISTS){
+		spawn_creep(count + 1);
+	}
+}
+
+function get_main_spawn(){
+	return Game.getObjectById(Memory.mainSpawn);
+}
+
+function clean(){
 	
 	for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
@@ -29,22 +48,28 @@ module.exports.loop = function () {
 		}
 	}
 	
-	spawn_controll(creeps_length);
-	
-	behaviour_controll(creeps_length);
-}
-
-function spawn_creep(count){	
-	var r = get_main_spawn().spawnCreep([WORK, CARRY, MOVE], 'creep_' + count, 
-	{memory: {behaviour: 0}});
-	
-	if(r == ERR_NAME_EXISTS){
-		spawn_creep(count + 1);
+	var droppped = get_main_spawn().pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+	if(droppped){
+		var creep = droppped.pos.findClosestByRange(FIND_MY_CREEPS, {
+			filter: function(object) {
+				return object.carry.energy < object.carryCapacity;
+			}
+		});
+		
+		if(creep){
+			creep.say('garbage');
+			var r = creep.pickup(droppped);
+			if(r == OK){
+				console.log(creep.name + ' clean');
+			}
+			else if(r == ERR_NOT_IN_RANGE){
+				creep.moveTo(droppped);
+			}
+			else{
+			}
+		}
 	}
-}
-
-function get_main_spawn(){
-	return Game.getObjectById(Memory.mainSpawn);
+	
 }
 
 function spawn_controll(creeps_length){
