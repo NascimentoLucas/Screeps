@@ -2,6 +2,9 @@ var creepWorkParts = [{type: WORK, cost: 100}, {type: CARRY, cost: 50}, {type: M
 var creepFitherParts = [{type: RANGED_ATTACK, cost: 150}, {type: MOVE, cost: 50}, {type: TOUGH, cost: 10}];
 var creepCost = 0;
 
+var prefFitherParts = [0, 2, 2, 2, 2, 2, 1];
+var prefWorkParts = [2, 0, 2, 2, 0, 2, 1];
+
 var maxEnergy;
 var nowEnergy;
 var stru;
@@ -19,21 +22,24 @@ var main = {
         {
             for (const i in stru)
             {
-                if ((stru[i].structureType == STRUCTURE_EXTENSION || stru[i].structureType == STRUCTURE_SPAWN) & (stru[i].isActive() == true))
+                if ((stru[i].structureType == STRUCTURE_EXTENSION 
+				|| stru[i].structureType == STRUCTURE_SPAWN) 
+				& (stru[i].isActive() == true))
                 {
                     maxEnergy += stru[i].energyCapacity;
                     nowEnergy += stru[i].energy;
                     //console.log(stru[i].energyCapacity + ": " + stru[i].isActive());
                 }
             }
-            maxEnergy *= 0.85;
+            //maxEnergy *= 0.90;
         }
         else
         {
             maxEnergy = 250;
             for (const i in stru)
             {
-                if ((stru[i].structureType == STRUCTURE_EXTENSION) & (stru[i].isActive() == true))
+                if ((stru[i].structureType == STRUCTURE_EXTENSION) 
+					& (stru[i].isActive() == true))
                 {
                     maxEnergy += stru[i].energy;
                     nowEnergy += stru[i].energy;
@@ -70,10 +76,10 @@ function buildCreep(m, creepParts, pref, standard) {
     //var pref = [2, 0, 2, 0, 1];
     var aux = 0;
     var temp;
-    console.log('++++++++++++++++++++++');
-    console.log('creepCost ' + creepCost + ' maxEnergy: ' + m);
+    console.log('creepCost ' + creepCost + ' budget Energy: ' + m);
     //m = 610;
 
+	var attempts = -pref.length;
     while (creepCost < m)
     {
         temp = creepParts[pref[aux % pref.length]];
@@ -83,7 +89,12 @@ function buildCreep(m, creepParts, pref, standard) {
         {
             console.log('dont add: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
             creepCost -= temp.cost;
-            break;
+            if(attempts > 0){
+				break;
+			}
+			else{
+				attempts++;
+			}
         }
         else if (creepCost < m)
         {
@@ -98,68 +109,26 @@ function buildCreep(m, creepParts, pref, standard) {
         }
         aux++;
     }
-
-    temp = creepParts[2];
-    while (creepCost < m)
-    {
-        creepCost += temp.cost;
-
-        if (creepCost > m)
-        {
-            console.log('dont add: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
-            break;
-        }
-        else if (creepCost < m)
-        {
-            standard.push(temp.type);
-            console.log('add: ' + temp.type + '(' + pref[aux % pref.length] + ') total: ' + creepCost);
-        }
-        else if (creepCost == m)
-        {
-            standard.push(temp.type);
-            console.log('add final: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
-            break;
-        }
-        aux++;
-    }
-
-    //for(const i in standard){
-    //console.log(standard[i]);
-    //}
-
-    var final = [];
-
-    for (const j in creepParts)
-        for (const i in standard)
-        {
-            if (standard[i] == creepParts[j].type)
-            {
-                final.push(standard[i]);
-            }
-        }
-
-    //for(const i in final){
-    //console.log(final[i]);
-    //}
-    console.log('++++++++++++++++++++++');
-    return final;
+	
+    return standard;
 }
 
-function spawn(now, numberMaxCreeps, figther) {
+function spawn(now, numberMaxCreeps, figther) {	
     var auxN = 0;
     if (now < numberMaxCreeps)
     {
+		console.log('++++++++++++++++++++++');
         var cont = ERR_NAME_EXISTS;
         var n = ('creep_' + auxN);
         var newCreep;
 
         if (figther)
         {
-            newCreep = buildCreep(maxEnergy, creepFitherParts, [0, 2, 2, 2, 2, 2, 1], [creepFitherParts[0].type, creepFitherParts[1].type, creepFitherParts[2].type]);
+            newCreep = buildCreep(maxEnergy, creepFitherParts, prefFitherParts, [creepFitherParts[0].type, creepFitherParts[1].type, creepFitherParts[2].type]);
         }
         else
         {
-            newCreep = buildCreep(maxEnergy, creepWorkParts, [2, 0, 2, 2, 0, 2, 1], [creepWorkParts[0].type, creepWorkParts[1].type, creepWorkParts[2].type]);
+            newCreep = buildCreep(maxEnergy, creepWorkParts, prefWorkParts, [creepWorkParts[0].type, creepWorkParts[1].type, creepWorkParts[2].type]);
         }
 
 
@@ -176,10 +145,10 @@ function spawn(now, numberMaxCreeps, figther) {
                 }
                 else if (cont == ERR_NAME_EXISTS)
                 {
-                    console.log('ERR_NAME_EXISTS: ' + n);
+                    //console.log('ERR_NAME_EXISTS: ' + n);
                     auxN++;
                     n = ('creep_' + auxN);
-                    console.log('trying: ' + n);
+                    //console.log('trying: ' + n);
                 }
                 else if (cont == ERR_NOT_ENOUGH_ENERGY)
                 {
@@ -195,6 +164,7 @@ function spawn(now, numberMaxCreeps, figther) {
 
             //console.log('feedback: ' + cont)
         }
+		console.log('++++++++++++++++++++++');
     }
     else
     {
