@@ -7,6 +7,7 @@ var main = {
 
     /** @param {Creep} creep **/
     get_sources: function(creep) {	
+		tool.clean_floor(creep);
 		if(Game.flags[creep.memory.flag]){
 			if(nearFlag(creep)){
 				if(creep.carry.energy < creep.carryCapacity) {
