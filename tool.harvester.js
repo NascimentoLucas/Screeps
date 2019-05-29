@@ -16,11 +16,11 @@ var main = {
 					}
 					else if(r == ERR_NOT_IN_RANGE){					
 						if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
-							creep.say('O.O flag');					
+							say(creep, creep.memory.count);					
 							return true;
 						}
-						else{	
-							creep.say('w c' + (Game.flags[creep.memory.flag].color - 1) + ' Flag');		
+						else{
+							say(creep, 'w c' + (Game.flags[creep.memory.flag].color - 1) + ' Flag');								
 							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
 						}
 					}
@@ -29,11 +29,11 @@ var main = {
 					
                     if (Game.flags[creep.memory.flag].color > COLOR_YELLOW){
                         if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
-                            creep.say('exit');
+                            say(creep,'exit');
                         }
                     }
                     else{
-                        creep.say('bye');                        
+						say(creep,'bye');                        
                         cleanFlag(creep, Game.flags[creep.memory.flag]);
                         creep.memory.flag = '';
                         return false;
@@ -43,7 +43,7 @@ var main = {
 				
 			}
 			else{
-				creep.say('gt:' + Game.flags[creep.memory.flag].name);				
+				say(creep,'gt:' + Game.flags[creep.memory.flag].name);				
 				tool.moveTo(creep, Game.flags[creep.memory.flag]);
 			}
 			return true;
@@ -58,21 +58,28 @@ var main = {
 					tool.moveTo(creep, Game.getObjectById(Memory.mainSpawn));
 				}
 			});
-			creep.say('w white Flag');
+			say(creep, 'w white Flag');
 			return true;
 		}	
 		return false;
 	}
 }
 
+function say(creep, msg){
+	
+	creep.say(msg);
+	//creep.memory.msg = msg;
+	
+}
+
 function mining(creep){
 	var sources = helper.get_sources(creep);
 	if(sources){
-		//creep.say(sources.pos.x +'/'+sources.pos.y);
+		say(creep,sources.pos.x +'/'+sources.pos.y);
 		return creep.harvest(sources);
 	}
 	else{
-		creep.say('null🔄');
+		say(creep,'null🔄');
 	}
 }
 

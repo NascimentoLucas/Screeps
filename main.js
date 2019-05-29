@@ -4,6 +4,8 @@ var roleBuilder = require('builder');
 var helper = require('helper');
 var managerCreepsSpwan = require('managerCreeps.spwan');
 
+var all_creeps;
+
 var max_creep_harvester = 10;
 var max_creep_upgrader = 2;
 var max_creep_builder = 2;
@@ -70,24 +72,45 @@ function spawn_controll(creeps_length){
 
 function behaviour_controll(creeps_length){
 	
-	var count = 0;
+	all_creeps = [];
 	
+	for(var name in Game.creeps) {
+		all_creeps.push(name);
+	}
 	
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-		if(count < max_creep_harvester) {			
+	var lowest;
+	var actual;
+	for(var i = 0; i < all_creeps.length; i++){		
+		lowest = Game.creeps[all_creeps[i]].ticksToLive;
+		for(var j = i; j < all_creeps.length; j++){
+			actual = Game.creeps[all_creeps[j]].ticksToLive;
+			
+			if(actual < lowest){
+				Game.creeps[all_creeps[i]].ticksToLive = actual;
+				Game.creeps[all_creeps[j]].ticksToLive = lowest;
+			}
+			
+			lowest = Game.creeps[all_creeps[i]].ticksToLive;
+		}
+	}
+	
+	for(var i = 0; i < all_creeps.length; i++){	
+        var creep = Game.creeps[all_creeps[i]];
+		creep.memory.count = i;
+		if(i < max_creep_harvester) {
+			creep.say('h');			
 			roleHarvester.run(creep);
-			//creep.say('h');
 		}
-		else if(count < max_creep_upgrader + max_creep_harvester) {
-			roleUpgrader.run(creep);
-			//creep.say('u');
+		else if(i < max_creep_upgrader + max_creep_harvester) {
+			creep.say('u');
+			roleUpgrader.run(creep);			
 		}
-		else if(count < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
+		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
+			creep.say('b');
 			roleBuilder.run(creep);
-			//creep.say('b');
 		}
-		count++;
+		//console.log(creep.ticksToLive);
+		//creep.say(i);
     }
 	
 }
