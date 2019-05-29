@@ -3,7 +3,7 @@ var roleUpgrader = require('upgrader');
 var roleBuilder = require('builder');
 var helper = require('helper');
 
-var max_creep_harvester = 1;
+var max_creep_harvester = 2;
 var max_creep_upgrader = 1;
 var max_creep_builder = 1;
 var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
@@ -11,12 +11,21 @@ var creeps_length;
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
+	
 	for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
             console.log('Clearing non-existing creep memory:', name);
         }
     }
+	
+	for(var flagName in Game.flags){
+		var flag = Game.flags[flagName];
+		
+		if(!Game.creeps[flag.memory.owner]){
+			flag.memory.owner = '';
+		}
+	}
 	
 	spawn_controll(creeps_length);
 	

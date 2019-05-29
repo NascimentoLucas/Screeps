@@ -1,5 +1,6 @@
 var helper = require('helper');
 var tool = require('tool.creep');
+var tool_builder = require('tool.builder');
 
 var main = {
 
@@ -19,8 +20,10 @@ var main = {
 				}
 			}
 			else{
-				if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+				if(!tool_builder.builder(creep)){
+					if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+						tool.moveTo(creep, creep.room.controller);
+					}
 				}
 			}
 			return true;
