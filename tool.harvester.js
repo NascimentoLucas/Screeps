@@ -20,24 +20,17 @@ var main = {
 							return true;
 						}
 						else{	
-							creep.say('w Flag');		
+							creep.say('w ' + (Game.flags[creep.memory.flag].color - 1) + ' Flag');		
 							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
 						}
 					}
 				}
 				else{
-					creep.say(Game.flags[creep.memory.flag].color);
-					if (Game.flags[creep.memory.flag].color < COLOR_YELLOW){
-						if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
-							creep.say('exit');
-						}
-					}
-					else{
-						creep.say('bye');						
-						cleanFlag(creep, Game.flags[creep.memory.flag]);
-						creep.memory.flag = '';
-						return false;
-					}
+					creep.say('bye');						
+					cleanFlag(creep, Game.flags[creep.memory.flag]);
+					creep.memory.flag = '';
+					return false;
+					
 				}
 				
 			}
@@ -50,7 +43,7 @@ var main = {
 		else{
 			//console.log('looking for flag');
 			findFlag(creep, COLOR_WHITE);
-			
+			creep.say('w '+COLOR_WHITE+' Flag');
 			return true;
 		}	
 		
