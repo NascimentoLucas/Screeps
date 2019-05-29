@@ -1,5 +1,5 @@
 var helper = {
-    ///** @param {Creep} creep **/
+    //** @param {Creep} creep **/
     get_energy: function() {
 		var energy = 0;
 		

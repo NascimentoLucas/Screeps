@@ -20,16 +20,24 @@ var main = {
 							return true;
 						}
 						else{	
-							creep.say('w ' + (Game.flags[creep.memory.flag].color - 1) + ' Flag');		
+							creep.say('w c' + (Game.flags[creep.memory.flag].color - 1) + ' Flag');		
 							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
 						}
 					}
 				}
 				else{
-					creep.say('bye');						
-					cleanFlag(creep, Game.flags[creep.memory.flag]);
-					creep.memory.flag = '';
-					return false;
+					
+                    if (Game.flags[creep.memory.flag].color > COLOR_YELLOW){
+                        if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
+                            creep.say('exit');
+                        }
+                    }
+                    else{
+                        creep.say('bye');                        
+                        cleanFlag(creep, Game.flags[creep.memory.flag]);
+                        creep.memory.flag = '';
+                        return false;
+                    }
 					
 				}
 				
@@ -42,14 +50,20 @@ var main = {
 		}
 		else{
 			//console.log('looking for flag');
-			findFlag(creep, COLOR_WHITE);
-			creep.say('w '+COLOR_WHITE+' Flag');
+			findFlag(creep, COLOR_WHITE);				
+			const look = creep.pos.look();
+			look.forEach(function(lookObject) {
+				if(lookObject.type == LOOK_FLAGS) {
+					console.log(creep.name + ' moving to mainSpawn');
+					tool.moveTo(creep, Game.getObjectById(Memory.mainSpawn));
+				}
+			});
+			creep.say('w white Flag');
 			return true;
 		}	
-		
 		return false;
-	}	
-};
+	}
+}
 
 function mining(creep){
 	var sources = helper.get_sources(creep);
@@ -72,22 +86,18 @@ function nearFlag(creep){
 }
 	
 function findFlag(creep, colorTarget){
-	for(var flagName in Game.flags){
-		var flag = Game.flags[flagName];
-		
-		if (flag.color == colorTarget){
-			if(!flag.memory.owner){			
-			
-				setupFlag(creep, flag);				
-				return true;
-			}
-			else if(flag.memory.owner == _FLAGNULL){
-				
-				setupFlag(creep, flag);
-				return true;
-			}
-		}
+	var flag = creep.pos.findClosestByRange(FIND_FLAGS, {
+            filter: (f) => {
+                return f.color == colorTarget 
+				& (!f.memory.owner || f.memory.owner == _FLAGNULL);
+            }
+	});
+	
+	if(flag){		
+		setupFlag(creep, flag);	
+		return true;
 	}
+	
 	return false;
 }
 
