@@ -12,6 +12,7 @@ var main = {
 							structure.energy < structure.energyCapacity;
 					}
 			});
+			
 			if(targets.length > 0) {
 				if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
@@ -27,7 +28,18 @@ var main = {
 		else{
 			return false;
 		}
-	}	
+	},	
+	upgrade_center(creep){
+		if (creep.carry.energy > 0){
+			if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+				tool.moveTo(creep, creep.room.controller);
+			}
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 };
 
 module.exports = main;

@@ -1,13 +1,12 @@
 var roleHarvester = require('harvester');
-var roleUpgrader = require('role.upgrader');
+var roleUpgrader = require('upgrader');
 var roleBuilder = require('role.builder');
 var helper = require('helper');
 
-var max_creep_harvester = 3;
-var max_creep_upgrader = max_creep_harvester + 3;
-var max_creep_builder = max_creep_upgrader + 3;
+var max_creep_harvester = 2;
+var max_creep_upgrader = max_creep_harvester + 2;
+var max_creep_builder = max_creep_upgrader + 2;
 var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
-max_creep = max_creep_harvester;
 var creeps_length;
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
@@ -24,9 +23,13 @@ module.exports.loop = function () {
 	behaviour_controll(creeps_length);
 }
 
-function spawn_creep(count ){	
-	get_main_spawn().spawnCreep([WORK, CARRY, MOVE], 'creep_' + count, 
+function spawn_creep(count){	
+	var r = get_main_spawn().spawnCreep([WORK, CARRY, MOVE], 'creep_' + count, 
 	{memory: {behaviour: 0}});
+	
+	if(r == ERR_NAME_EXISTS){
+		spawn_creep(count + 1);
+	}
 }
 
 function get_main_spawn(){
@@ -35,7 +38,7 @@ function get_main_spawn(){
 
 function spawn_controll(creeps_length){
 	if(get_main_spawn()){
-		if (creeps_length < max_creep){
+		if (creeps_length < max_creep){			
 			if(helper.get_energy() >= 300){
 				spawn_creep(creeps_length);
 			}
@@ -52,17 +55,20 @@ function behaviour_controll(creeps_length){
 	
 	var count = 0;
 	
+	max_creep = max_creep_harvester;
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 		if(count < max_creep_harvester) {
 			roleHarvester.run(creep);
+			//creep.say('h');
 		}
-		if(count < max_creep_upgrader) {
-			continue;
+		else if(count < max_creep_upgrader) {
 			roleUpgrader.run(creep);
+			//creep.say('u');
 		}
-		if(count < max_creep_builder) {
-			roleBuilder.run(creep);
+		else if(count < max_creep_builder) {
+			//roleBuilder.run(creep);
+			//creep.say('b');
 		}
 		count++;
     }
