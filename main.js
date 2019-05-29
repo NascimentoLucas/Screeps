@@ -2,6 +2,7 @@ var roleHarvester = require('harvester');
 var roleUpgrader = require('upgrader');
 var roleBuilder = require('builder');
 var helper = require('helper');
+var managerCreepsSpwan = require('managerCreeps.spwan');
 
 var max_creep_harvester = 3;
 var max_creep_upgrader = 2;
@@ -60,7 +61,8 @@ function clean(){
 			creep.say('garbage');
 			var r = creep.pickup(droppped);
 			if(r == OK){
-				console.log(creep.name + ' clean');
+				console.log(creep.name + ' clean floor at: ' + droppped.pos.x + '/' 
+				+ droppped.pos.y);
 			}
 			else if(r == ERR_NOT_IN_RANGE){
 				creep.moveTo(droppped);
@@ -73,14 +75,8 @@ function clean(){
 }
 
 function spawn_controll(creeps_length){
-	if(get_main_spawn()){
-		if (creeps_length < max_creep){			
-			if(helper.get_energy() >= 300){
-				spawn_creep(creeps_length);
-			}
-		}
-	}	
-	else{
+	managerCreepsSpwan.run(creeps_length, max_creep, false);
+	if(!get_main_spawn()){
 		Object.keys(Game.spawns).forEach(function (key) { 
 			Memory.mainSpawn = Game.spawns[key].id;
 		})
