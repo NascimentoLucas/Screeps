@@ -15,37 +15,24 @@ var main = {
 		//return false;
 		
 		if(Game.flags[creep.memory.flag]){
+			flag = Game.flags[creep.memory.flag];
 			if(nearFlag(creep)){
 				if(creep.carry.energy < creep.carryCapacity) {
 					var r = mining(creep);
 					
 					if(r == OK){	
 					}
-					else if(r == ERR_NOT_IN_RANGE){	
-						if((Memory.name_queue == creep.name && 
-							Game.flags[creep.memory.flag].color == Memory.queue) ||
-							Memory.queue == _FLAGNULL ||
-							Memory.queue > Game.flags[creep.memory.flag].color){
-							if(find_flag(standard_distance, creep, Game.flags[creep.memory.flag].color - 1)){
-								//say(creep, creep.memory.count);
-								Memory.queue = _FLAGNULL;
-								return true;
-							}
-							else{
-								//say(creep, Game.flags[creep.memory.flag].color - 1);	
-								if(Game.flags[creep.memory.flag].color <= color_limit){								
-									go_to_exit(creep, standard_distance);
-								}
-								else{
-									say(creep, 'n');
-									Memory.queue = Game.flags[creep.memory.flag].color;
-									Memory.name_queue = creep.name;
-								}
-								//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
-							}
+					else if(r == ERR_NOT_IN_RANGE){							
+						if(find_flag(standard_distance, creep, flag.color - 1)){
+							//say(creep, creep.memory.count);
+							return true;
 						}
 						else{
-							say(creep, 'q');
+							say(creep, Game.flags[creep.memory.flag].color - 1);	
+							if(flag.color <= color_limit){								
+								go_to_exit(creep, standard_distance);
+							}
+							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
 						}
 					}
 					else if (r || ERR_NOT_ENOUGH_RESOURCES){
@@ -57,8 +44,8 @@ var main = {
 				
 			}
 			else{
-				say(creep,'gt:' + Game.flags[creep.memory.flag].name);				
-				tool.moveTo(creep, Game.flags[creep.memory.flag]);
+				say(creep,'gt:' + flag.name);				
+				tool.moveTo(creep, flag);
 			}
 			return true;
 		}
