@@ -36,6 +36,7 @@ var main = {
 						}
 					}
 					else if (r || ERR_NOT_ENOUGH_RESOURCES){
+					    return false;
 					}
 				}
 				else{					
