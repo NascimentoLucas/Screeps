@@ -18,7 +18,7 @@ var roleHarvester = {
 };
 
 function harvest(creep){
-	if(!tool_harvester.get_sources(creep, 20)){
+	if(!tool_harvester.get_sources(creep, 1000)){
 		creep.memory.behaviour = _DELIVERY;
 		creep.say('DELIVERY');
 	}		

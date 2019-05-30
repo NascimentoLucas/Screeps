@@ -15,7 +15,6 @@ function get_builder_command(f, target){
 }
 
 const preferenceWork = [
-	get_builder_command(find_structure_to_repair, STRUCTURE_WALL),
 	get_builder_command(find_structure_to_construct, STRUCTURE_WALL),
 	get_builder_command(find_structure_to_construct, STRUCTURE_TOWER),
 	get_builder_command(find_structure_to_construct, STRUCTURE_EXTENSION),
@@ -55,7 +54,7 @@ function find_structure_to_repair(creep, type) {
 		var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: (structure) => {
 				return (structure.structureType == type &
-						(structure.hits < 100));
+						(structure.hits < structure.hitsMax));
 			}
 		});	
 		if(target != null){				

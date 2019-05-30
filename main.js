@@ -144,7 +144,7 @@ function behaviour_controll(creeps_length){
 			//creep.say('b');
 		}
 		//console.log(creep.ticksToLive);
-		creep.say(i);
+		//creep.say(i);
     }
 	
 }

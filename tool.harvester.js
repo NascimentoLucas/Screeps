@@ -11,6 +11,7 @@ var main = {
     get_sources: function(creep, first_flag_distance) {	
 		//cleanFlag(creep, Game.flags[creep.memory.flag]);
 		//return false;
+		
 		if(Game.flags[creep.memory.flag]){
 			if(nearFlag(creep)){
 				if(creep.carry.energy < creep.carryCapacity) {
@@ -44,10 +45,24 @@ var main = {
 			return true;
 		}
 		else{
-			say(creep, 'w');
-			//console.log(creep.name + ' looking for flag');
-			tool.check_above_flag(creep);				
-			find_flag(first_flag_distance, creep, COLOR_WHITE);
+			if(Memory.queue == _FLAGNULL || Memory.queue == creep.name){
+				say(creep, 'w');
+				//console.log(creep.name + ' looking for flag');
+				tool.check_above_flag(creep);				
+				if(!find_flag(first_flag_distance, creep, COLOR_WHITE)){
+					Memory.queue = creep.name;
+					console.log(creep.name+ ' lock queue');
+				}
+			}
+			else if (Memory.queue == creep.name){
+				if(find_flag(first_flag_distance, creep, COLOR_WHITE)){
+					Memory.queue = _FLAGNULL;
+					console.log(creep.name+ ' free queue');
+				}
+			}
+			else{
+				say(creep, 'q');				
+			}
 			return true;
 		}	
 		return false;
@@ -104,11 +119,10 @@ function find_flag(dist, creep, colorTarget){
             }
 	});
 	
-	if(flag.length > 0){	
-		setupFlag(creep, flag[0]);	
+	if(flag.length > 0){			
+		setupFlag(creep, flag[0]);		
 		return true;
 	}
-	
 	return false;
 	
 }
