@@ -10,12 +10,12 @@ var roleHarvester = {
 		const look = creep.pos.look();
 		look.forEach(function(lookObject) {
 			if(lookObject.type == LOOK_FLAGS) {
-				console.log(creep.name + ' moving to mainSpawn');
 				
 				
-				for(var name in Game.spawns) {				
-					creep.moveTo(creep, Game.spawns[name]);
-					
+				for(var name in Game.spawns) {		
+			    	creep.move(LEFT);
+					creep.moveTo(Game.spawns[name], {visualizePathStyle: {stroke: '#ffaa00'}});
+				    console.log(creep.name + ' moving to mainSpawn ' + Game.spawns[name].pos);
 					break;
 				}
 			}
