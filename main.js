@@ -15,8 +15,10 @@ var creeps_length;
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
-	tower();
 	
+	for (var r in Game.rooms) {
+    	defendRoom(r);
+	}
 	spawn_controll(creeps_length);
 	
 	behaviour_controll(creeps_length);
@@ -138,11 +140,22 @@ function behaviour_controll(creeps_length){
 			roleUpgrader.run(creep);			
 		}
 		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
-			creep.say('b');
+			//creep.say('b');
 			roleBuilder.run(creep);
 		}
 		//console.log(creep.ticksToLive);
 		//creep.say(i);
     }
 	
+}
+
+function defendRoom(roomName) {
+    var hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+    if(hostiles.length > 0) {
+        var username = hostiles[0].owner.username;
+        Game.notify(`User ${username} spotted in room ${roomName}`);
+        var towers = Game.rooms[roomName].find(
+            FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}});
+        towers.forEach(tower => tower.attack(hostiles[0]));
+    }
 }
