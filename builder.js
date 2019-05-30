@@ -19,7 +19,7 @@ var main = {
 };
 
 function harvest(creep){
-	if(!tool_harvester.get_sources(creep)){
+	if(!tool_harvester.get_sources(creep, 1000)){
 		creep.memory.behaviour = _BUILDER;
 		creep.say('BUILDER');
 	}		

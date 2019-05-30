@@ -31,7 +31,7 @@ var main = {
                     //console.log(stru[i].energyCapacity + ": " + stru[i].isActive());
                 }
             }
-            //maxEnergy *= 0.90;
+            maxEnergy *= 0.85;
         }
         else
         {

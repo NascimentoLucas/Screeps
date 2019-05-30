@@ -18,7 +18,7 @@ var roleHarvester = {
 				for(var name in Game.spawns) {		
 			    	creep.move(LEFT);
 					creep.moveTo(Game.spawns[name], {visualizePathStyle: {stroke: '#ffaa00'}});
-				    console.log(creep.name + ' moving to mainSpawn ' + Game.spawns[name].pos);
+				    //console.log(creep.name + ' moving to mainSpawn ' + Game.spawns[name].pos);
 					break;
 				}
 			}

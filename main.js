@@ -6,19 +6,23 @@ var managerCreepsSpwan = require('managerCreeps.spwan');
 
 var all_creeps;
 
-var max_creep = 15;
+var max_creep = 20;
 var max_creep_harvester = max_creep * 0.4;
 var max_creep_upgrader = max_creep * 0.2;
-var max_creep_builder = max_creep * 0.4;
+var max_creep_builder = max_creep * 0.5;
 var creeps_length;
 
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
 	
+	
 	for (var r in Game.rooms) {
     	defendRoom(r);
 	}
+	
+	tower();
+	
 	spawn_controll(creeps_length);
 	
 	behaviour_controll(creeps_length);
@@ -34,13 +38,9 @@ function tower(){
 			var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: (structure) => structure.hits < structure.hitsMax
 			});
+			
 			if(closestDamagedStructure) {
 				tower.repair(closestDamagedStructure);
-			}
-
-			var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-			if(closestHostile) {
-				tower.attack(closestHostile);
 			}
 		}
 	}
@@ -132,16 +132,16 @@ function behaviour_controll(creeps_length){
 		
 		//creep.memory.count = i;
 		if(i < max_creep_harvester) {
-			//creep.say('h');			
 			roleHarvester.run(creep);
+			//creep.say('h');			
 		}
 		else if(i < max_creep_upgrader + max_creep_harvester) {
-			//creep.say('u');
-			roleUpgrader.run(creep);			
+			roleUpgrader.run(creep);	
+			//creep.say('u');		
 		}
 		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
-			//creep.say('b');
 			roleBuilder.run(creep);
+			creep.say('b');
 		}
 		//console.log(creep.ticksToLive);
 		//creep.say(i);

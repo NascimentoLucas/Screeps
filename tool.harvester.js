@@ -3,10 +3,14 @@ var tool = require('tool.creep');
 
 var _FLAGNULL = '_FLAGNULL';
 
+var standard_distance = 5;
+
 var main = {
 
     /** @param {Creep} creep **/
-    get_sources: function(creep) {	
+    get_sources: function(creep, first_flag_distance) {	
+		//cleanFlag(creep, Game.flags[creep.memory.flag]);
+		//return false;
 		if(Game.flags[creep.memory.flag]){
 			if(nearFlag(creep)){
 				if(creep.carry.energy < creep.carryCapacity) {
@@ -15,19 +19,21 @@ var main = {
 					if(r == OK){	
 					}
 					else if(r == ERR_NOT_IN_RANGE){					
-						if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
+						if(find_flag(standard_distance, creep, Game.flags[creep.memory.flag].color - 1)){
 							//say(creep, creep.memory.count);					
 							return true;
 						}
 						else{
 							say(creep, Game.flags[creep.memory.flag].color - 1);	
-							return Game.flags[creep.memory.flag].color > COLOR_YELLOW;							
+							if(Game.flags[creep.memory.flag].color <= COLOR_YELLOW){								
+								go_to_exit(creep, standard_distance);
+							}
 							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
 						}
 					}
 				}
 				else{					
-                    return go_to_exit(creep);					
+                    return go_to_exit(creep, standard_distance);					
 				}
 				
 			}
@@ -38,9 +44,9 @@ var main = {
 			return true;
 		}
 		else{
-			//console.log('looking for flag');
-			findFlag(creep, COLOR_WHITE);
-			tool.check_above_flag(creep);
+			//console.log(creep.name + ' looking for flag');
+			tool.check_above_flag(creep);				
+			find_flag(first_flag_distance, creep, COLOR_WHITE);
 			say(creep, 'w');
 			return true;
 		}	
@@ -55,8 +61,9 @@ function say(creep, msg){
 }
 
 function go_to_exit(creep){
+	//console.log(creep.name + ' looking for flag');
 	if (Game.flags[creep.memory.flag].color > COLOR_YELLOW){
-		if(findFlag(creep, Game.flags[creep.memory.flag].color - 1)){
+		if(find_flag(standard_distance, creep, Game.flags[creep.memory.flag].color - 1)){
 			say(creep,'quiting');
 		}
 		return true;
@@ -88,21 +95,22 @@ function nearFlag(creep){
 	}
 	return false;
 }
-	
-function findFlag(creep, colorTarget){
-	var flag = creep.pos.findClosestByRange(FIND_FLAGS, {
+
+function find_flag(standard_distance, creep, colorTarget){
+	var flag = creep.pos.findInRange(FIND_FLAGS, standard_distance,{
             filter: (f) => {
                 return f.color == colorTarget 
 				& (!f.memory.owner || f.memory.owner == _FLAGNULL);
             }
 	});
 	
-	if(flag){		
-		setupFlag(creep, flag);	
+	if(flag.length > 0){	
+		setupFlag(creep, flag[0]);	
 		return true;
 	}
 	
 	return false;
+	
 }
 
 function setupFlag(creep, flag){
