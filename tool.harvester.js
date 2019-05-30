@@ -5,6 +5,8 @@ var _FLAGNULL = '_FLAGNULL';
 
 var standard_distance = 5;
 
+var color_limit = COLOR_YELLOW;
+
 var main = {
 
     /** @param {Creep} creep **/
@@ -19,18 +21,34 @@ var main = {
 					
 					if(r == OK){	
 					}
-					else if(r == ERR_NOT_IN_RANGE){					
-						if(find_flag(standard_distance, creep, Game.flags[creep.memory.flag].color - 1)){
-							//say(creep, creep.memory.count);					
-							return true;
+					else if(r == ERR_NOT_IN_RANGE){	
+						if((Memory.name_queue == creep.name && 
+							Game.flags[creep.memory.flag].color == Memory.queue) ||
+							Memory.queue == _FLAGNULL ||
+							Memory.queue > Game.flags[creep.memory.flag].color){
+							if(find_flag(standard_distance, creep, Game.flags[creep.memory.flag].color - 1)){
+								//say(creep, creep.memory.count);
+								Memory.queue = _FLAGNULL;
+								return true;
+							}
+							else{
+								//say(creep, Game.flags[creep.memory.flag].color - 1);	
+								if(Game.flags[creep.memory.flag].color <= color_limit){								
+									go_to_exit(creep, standard_distance);
+								}
+								else{
+									say(creep, 'n');
+									Memory.queue = Game.flags[creep.memory.flag].color;
+									Memory.name_queue = creep.name;
+								}
+								//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
+							}
 						}
 						else{
-							say(creep, Game.flags[creep.memory.flag].color - 1);	
-							if(Game.flags[creep.memory.flag].color <= COLOR_YELLOW){								
-								go_to_exit(creep, standard_distance);
-							}
-							//console.log('did not find NEW flag.color: ' + (Game.flags[creep.memory.flag].color - 1));
+							say(creep, 'q');
 						}
+					}
+					else if (r || ERR_NOT_ENOUGH_RESOURCES){
 					}
 				}
 				else{					
@@ -44,25 +62,11 @@ var main = {
 			}
 			return true;
 		}
-		else{
-			if(Memory.queue == _FLAGNULL || Memory.queue == creep.name){
-				say(creep, 'w');
-				//console.log(creep.name + ' looking for flag');
-				tool.check_above_flag(creep);				
-				if(!find_flag(first_flag_distance, creep, COLOR_WHITE)){
-					Memory.queue = creep.name;
-					console.log(creep.name+ ' lock queue');
-				}
-			}
-			else if (Memory.queue == creep.name){
-				if(find_flag(first_flag_distance, creep, COLOR_WHITE)){
-					Memory.queue = _FLAGNULL;
-					console.log(creep.name+ ' free queue');
-				}
-			}
-			else{
-				say(creep, 'q');				
-			}
+		else{            
+			say(creep, 'w');
+            //console.log(creep.name + ' looking for flag');
+            tool.check_above_flag(creep);                
+            find_flag(first_flag_distance, creep, COLOR_WHITE);
 			return true;
 		}	
 		return false;
@@ -77,7 +81,7 @@ function say(creep, msg){
 
 function go_to_exit(creep){
 	//console.log(creep.name + ' looking for flag');
-	if (Game.flags[creep.memory.flag].color > COLOR_YELLOW){
+	if (Game.flags[creep.memory.flag].color > color_limit){
 		if(find_flag(standard_distance, creep, Game.flags[creep.memory.flag].color - 1)){
 			say(creep,'quiting');
 		}
