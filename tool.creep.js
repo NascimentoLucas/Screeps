@@ -4,6 +4,9 @@ var roleHarvester = {
 
     /** @param {Creep} creep **/
     moveTo: function(creep, target) {
+		creep.moveTo(target);
+	},
+	moveMark: function(creep, target) {
 		creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
 	},
 	check_above_flag(creep){
