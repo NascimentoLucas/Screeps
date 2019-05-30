@@ -15,8 +15,8 @@ function get_builder_command(f, target){
 }
 
 const preferenceWork = [
-	get_builder_command(find_structure_to_construct, STRUCTURE_EXTENSION),
 	get_builder_command(find_structure_to_construct, STRUCTURE_TOWER),
+	get_builder_command(find_structure_to_construct, STRUCTURE_EXTENSION),
 	
 	get_builder_command(find_structure_to_repair, STRUCTURE_TOWER),
 	get_builder_command(find_structure_to_repair, STRUCTURE_WALL),
