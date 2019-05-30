@@ -31,7 +31,6 @@ var main = {
 		if(creep.carry.energy > 0){
 			tool.check_above_flag(creep);			
 			
-			console.log('-----');
 			for (var i = 0; i < preferenceWork.length; i++)
 			{	
 				if(preferenceWork[i].command(creep)){
@@ -76,7 +75,6 @@ function find_structure_to_construct(creep, type) {
 		});
 		
 		if(target != null){		
-			console.log('building ' + target);
 			if(creep.build(target) == ERR_NOT_IN_RANGE) {
 				tool.moveMark(creep, target);
 			}	
