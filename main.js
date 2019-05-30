@@ -7,19 +7,41 @@ var managerCreepsSpwan = require('managerCreeps.spwan');
 var all_creeps;
 
 var max_creep_harvester = 10;
-var max_creep_upgrader = 2;
-var max_creep_builder = 2;
+var max_creep_upgrader = 4;
+var max_creep_builder = 4;
 var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
 var creeps_length;
 
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
+	tower();
+	
 	spawn_controll(creeps_length);
 	
 	behaviour_controll(creeps_length);
 	
 	clean();	
+}
+
+function tower(){
+	var tower;
+	for (var t in Game.structures) {
+		tower = Game.structures[t];
+		if(tower.structureType == StructureTower) {
+			var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+				filter: (structure) => structure.hits < structure.hitsMax
+			});
+			if(closestDamagedStructure) {
+				tower.repair(closestDamagedStructure);
+			}
+
+			var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+			if(closestHostile) {
+				tower.attack(closestHostile);
+			}
+		}
+	}
 }
 
 function clean(){
