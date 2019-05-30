@@ -15,7 +15,7 @@ var main = {
 		//return false;
 		
 		if(Game.flags[creep.memory.flag]){
-			flag = Game.flags[creep.memory.flag];
+			var flag = Game.flags[creep.memory.flag];
 			if(nearFlag(creep)){
 				if(creep.carry.energy < creep.carryCapacity) {
 					var r = mining(creep);
