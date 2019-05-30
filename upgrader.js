@@ -19,7 +19,7 @@ var main = {
 };
 
 function harvest(creep){
-	if(!tool_harvester.get_sources(creep, 5)){
+	if(!tool_harvester.get_sources(creep, 20)){
 		creep.memory.behaviour = _UPGRADE;
 		creep.say('UPGRADE');
 	}		

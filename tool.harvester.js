@@ -44,10 +44,10 @@ var main = {
 			return true;
 		}
 		else{
+			say(creep, 'w');
 			//console.log(creep.name + ' looking for flag');
 			tool.check_above_flag(creep);				
 			find_flag(first_flag_distance, creep, COLOR_WHITE);
-			say(creep, 'w');
 			return true;
 		}	
 		return false;
@@ -55,7 +55,7 @@ var main = {
 }
 
 function say(creep, msg){
-	//creep.say(msg);
+	creep.say(msg);
 	//creep.memory.msg = msg;
 	
 }
@@ -96,8 +96,8 @@ function nearFlag(creep){
 	return false;
 }
 
-function find_flag(standard_distance, creep, colorTarget){
-	var flag = creep.pos.findInRange(FIND_FLAGS, standard_distance,{
+function find_flag(dist, creep, colorTarget){
+	var flag = creep.pos.findInRange(FIND_FLAGS, dist,{
             filter: (f) => {
                 return f.color == colorTarget 
 				& (!f.memory.owner || f.memory.owner == _FLAGNULL);

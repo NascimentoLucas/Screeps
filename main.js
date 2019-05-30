@@ -141,10 +141,10 @@ function behaviour_controll(creeps_length){
 		}
 		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
 			roleBuilder.run(creep);
-			creep.say('b');
+			//creep.say('b');
 		}
 		//console.log(creep.ticksToLive);
-		//creep.say(i);
+		creep.say(i);
     }
 	
 }
