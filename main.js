@@ -6,10 +6,10 @@ var managerCreepsSpwan = require('managerCreeps.spwan');
 
 var all_creeps;
 
-var max_creep_harvester = 10;
-var max_creep_upgrader = 4;
-var max_creep_builder = 4;
-var max_creep = max_creep_harvester + max_creep_upgrader + max_creep_builder;
+var max_creep = 20;
+var max_creep_harvester = max_creep * 0.5;
+var max_creep_upgrader = max_creep * 0.2;
+var max_creep_builder = max_creep * 0.3;
 var creeps_length;
 
 module.exports.loop = function () {	
@@ -130,11 +130,11 @@ function behaviour_controll(creeps_length){
 		
 		//creep.memory.count = i;
 		if(i < max_creep_harvester) {
-			creep.say('h');			
+			//creep.say('h');			
 			roleHarvester.run(creep);
 		}
 		else if(i < max_creep_upgrader + max_creep_harvester) {
-			creep.say('u');
+			//creep.say('u');
 			roleUpgrader.run(creep);			
 		}
 		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {

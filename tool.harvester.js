@@ -49,7 +49,7 @@ var main = {
 }
 
 function say(creep, msg){
-	creep.say(msg);
+	//creep.say(msg);
 	//creep.memory.msg = msg;
 	
 }
