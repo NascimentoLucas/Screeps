@@ -16,7 +16,9 @@ function get_builder_command(f, target){
 
 const preferenceWork = [
 	get_builder_command(repair_wall, 100),
+	get_builder_command(repair_rampart, 100),
 	get_builder_command(find_structure_to_construct, STRUCTURE_RAMPART),
+	
 	get_builder_command(find_structure_to_construct, STRUCTURE_WALL),
 	get_builder_command(find_structure_to_construct, STRUCTURE_TOWER),
 	get_builder_command(find_structure_to_construct, STRUCTURE_EXTENSION),
@@ -91,12 +93,12 @@ function find_structure_to_construct(creep, type) {
 	return false;
 }
 
-function repair_wall(creep){
+function repair_at_minimum(creep, type, min){
 	if(creep != null){
 		var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: (structure) => {
-				return (structure.structureType == STRUCTURE_WALL &
-						(structure.hits < 300));
+				return (structure.structureType == type &
+						(structure.hits < min));
 			}
 		});	
 		if(target != null){				
@@ -108,6 +110,14 @@ function repair_wall(creep){
 		}
 	}
 	return false;
+}
+
+function repair_wall(creep){
+	return repair_at_minimum(creep, STRUCTURE_WALL, 300);
+}
+
+function repair_rampart(creep){
+	return repair_at_minimum(creep, STRUCTURE_RAMPART, 1000);
 }
 
 function repair_or_build(creep) {	
