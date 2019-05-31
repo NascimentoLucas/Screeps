@@ -15,6 +15,7 @@ function get_builder_command(f, target){
 }
 
 const preferenceWork = [
+	get_builder_command(repair_wall, 100),
 	get_builder_command(find_structure_to_construct, STRUCTURE_RAMPART),
 	get_builder_command(find_structure_to_construct, STRUCTURE_WALL),
 	get_builder_command(find_structure_to_construct, STRUCTURE_TOWER),
@@ -87,6 +88,25 @@ function find_structure_to_construct(creep, type) {
 		}
 	}	
 	
+	return false;
+}
+
+function repair_wall(creep){
+	if(creep != null){
+		var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: (structure) => {
+				return (structure.structureType == STRUCTURE_WALL &
+						(structure.hits < 300));
+			}
+		});	
+		if(target != null){				
+		
+			if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+				tool.moveTo(creep, target);
+			}
+			return true;
+		}
+	}
 	return false;
 }
 
