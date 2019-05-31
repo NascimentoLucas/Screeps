@@ -33,6 +33,9 @@ var main = {
 						}
 					}
 					else if (r || ERR_NOT_ENOUGH_RESOURCES){
+						say(creep, 'e');
+						//console.log(creep.name + ' looking for flag');						              
+						find_first_flag(creep, COLOR_WHITE);
 					    return false;
 					}
 				}
