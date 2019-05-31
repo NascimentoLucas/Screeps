@@ -44,8 +44,8 @@ var main = {
 	},	
 	upgrade_center(creep){
 		if (creep.carry.energy > 0){
-			if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-				tool.moveTo(creep, creep.room.controller);
+			if(creep.upgradeController(Game.rooms['E15S18'].controller) == ERR_NOT_IN_RANGE) {
+				tool.moveTo(creep, Game.rooms['E15S18'].controller);
 			}
 			return true;
 		}
