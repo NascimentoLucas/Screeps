@@ -159,3 +159,11 @@ function defendRoom(roomName) {
         towers.forEach(tower => tower.attack(hostiles[0]));
     }
 }
+
+function remove_construction_sites(type){
+	for (var s in Game.constructionSites) {
+    	if(Game.constructionSites[s].structureType == type){
+    	    Game.constructionSites[s].remove();
+    	}
+	}
+}
