@@ -74,12 +74,25 @@ function find_structure_to_repair(creep, type) {
 }
 
 function find_structure_to_construct(creep, type) {
+	
+	
+	
 	if(creep != null){
-		var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
-			filter: (structure) => {
-				return (structure.structureType == type);
+		//var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
+			//filter: (structure) => {
+				//return (structure.structureType == type);
+			//}
+		//});
+		
+		var target = null;
+		
+		for (var s in Game.constructionSites) {
+		var cs = Game.constructionSites[s];
+			if(cs.structureType == type){
+				target = cs;
+				break;
 			}
-		});
+		}
 		
 		if(target != null){		
 			if(creep.build(target) == ERR_NOT_IN_RANGE) {

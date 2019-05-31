@@ -70,9 +70,6 @@ function go_to_exit(creep){
 		if(find_flag(creep, Game.flags[creep.memory.flag].color - 1)){
 			say(creep,'quiting');
 		}
-		else{
-			console.log(creep.name  + ' dont find flag maybe too far');
-		}
 		return true;
 	}
 	else{
@@ -128,6 +125,9 @@ function find_flag(creep, colorTarget){
 		setupFlag(creep, flag[0]);		
 		return true;
 	}
+	
+	
+	
 	return false;
 	
 }
