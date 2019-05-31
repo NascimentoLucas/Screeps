@@ -3,7 +3,7 @@ var creepFitherParts = [{type: RANGED_ATTACK, cost: 150}, {type: MOVE, cost: 50}
 var creepCost = 0;
 
 var prefFitherParts = [0, 2, 2, 2, 2, 2, 1];
-var prefWorkParts = [2, 0, 2, 1, 2];
+var prefWorkParts = [2, 0, 1, 2, 0];
 
 var maxEnergy;
 var nowEnergy;
