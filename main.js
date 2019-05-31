@@ -8,8 +8,8 @@ var all_creeps;
 
 var max_creep = 20;
 var max_creep_harvester = max_creep * 0.4;
-var max_creep_upgrader = max_creep * 0.1;
-var max_creep_builder = max_creep * 0.5;
+var max_creep_upgrader = max_creep * 0.2;
+var max_creep_builder = max_creep * 0.4;
 var creeps_length;
 
 module.exports.loop = function () {	
@@ -140,6 +140,7 @@ function behaviour_controll(creeps_length){
 			//creep.say('u');		
 		}
 		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
+			
 			roleBuilder.run(creep);
 			//creep.say('b');
 		}
