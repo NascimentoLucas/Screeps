@@ -56,12 +56,24 @@ var main = {
 
 function find_structure_to_repair(creep, type) {
 	if(creep != null){
-		var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: (structure) => {
-				return (structure.structureType == type &
-						(structure.hits < structure.hitsMax));
+		//var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			//filter: (structure) => {
+				//return (structure.structureType == type &
+						//(structure.hits < structure.hitsMax));
+			//}
+		//});	
+		
+		var target = null;
+		
+		for (var s in Game.constructionSites) {
+		var cs = Game.constructionSites[s];
+			if(cs.structureType == type & 
+				cs.hits < cs.hitsMax){
+				target = cs;
+				break;
 			}
-		});	
+		}
+		
 		if(target != null){				
 		
 			if(creep.repair(target) == ERR_NOT_IN_RANGE) {
