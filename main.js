@@ -15,7 +15,7 @@ var creeps_length;
 module.exports.loop = function () {	
 	creeps_length = Object.keys(Game.creeps).length;
 	
-	
+	//remove_construction_sites(STRUCTURE_ROAD);
 	
 	for (var r in Game.rooms) {
     	defendRoom(r);
