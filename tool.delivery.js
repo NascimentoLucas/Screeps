@@ -7,16 +7,15 @@ var main = {
     /** @param {Creep} creep **/
     delivery_sources: function(creep) {
 		if (creep.carry.energy > 0){
-			
-			var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+			var target = Game.rooms['E15S18'].controller.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: (structure) => {
 						return (structure.structureType == STRUCTURE_TOWER) 
 						&& structure.energy < structure.energyCapacity;
 					}
 			});
-			
+			//console.log(Game.rooms['E15S18'].controller.pos.findClosestByRange);
 			if(!target){
-				target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+				target = Game.rooms['E15S18'].controller.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: (structure) => {
 							return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) 
 							&& structure.energy < structure.energyCapacity;
