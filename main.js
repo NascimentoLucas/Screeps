@@ -6,7 +6,7 @@ var managerCreepsSpwan = require('managerCreeps.spwan');
 
 var all_creeps;
 
-var max_creep = 20;
+var max_creep = 30;
 var max_creep_harvester = max_creep * 0.4;
 var max_creep_upgrader = max_creep * 0.2;
 var max_creep_builder = max_creep * 0.4;

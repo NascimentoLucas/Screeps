@@ -140,6 +140,9 @@ function spawn(now, numberMaxCreeps, figther) {
 
                 if (cont == OK)
                 {
+					if(Memory.max < now){
+						Memory.max = now;
+					}
                     //console.log('Spawn: ' + n + ' ' + now + ' of ' + numberMaxCreeps);
 					//console.log('++++++++++++++++++++++');
                     return true;
