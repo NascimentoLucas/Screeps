@@ -59,7 +59,12 @@ function clean(){
 		var flag = Game.flags[flagName];
 		
 		if(!Game.creeps[flag.memory.owner]){
-			flag.memory.owner = '';
+			if(flag.color != COLOR_PURPLE){
+				flag.memory.owner = '';
+			}
+			else{
+				garbage(flag);
+			}
 			//console.log('cleanig flag\'s owner dead');
 		}
 		else{
@@ -70,8 +75,11 @@ function clean(){
 		}
 	}
 	
-	for(var name in Game.spawns) {
-		var droppped = Game.spawns[name].pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+}
+
+function garbage(obj){
+	try {
+		var droppped = obj.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
 		if(droppped){
 			var creep = droppped.pos.findClosestByRange(FIND_MY_CREEPS, {
 				filter: function(object) {
@@ -84,7 +92,7 @@ function clean(){
 				var r = creep.pickup(droppped);
 				if(r == OK){
 					//console.log(creep.name + ' clean floor at: ' + droppped.pos.x + '/' 
-					//+ droppped.pos.y);
+					//+ droppped.pos.y + ' in ' + obj.name);
 				}
 				else if(r == ERR_NOT_IN_RANGE){
 					creep.moveTo(droppped);
@@ -93,9 +101,10 @@ function clean(){
 				}
 			}
 		}
-	break;
 	}
-	
+	catch(err) {
+	  
+	}
 }
 
 function spawn_controll(creeps_length){
@@ -133,16 +142,16 @@ function behaviour_controll(creeps_length){
 		//creep.memory.count = i;
 		if(i < max_creep_harvester) {
 			roleHarvester.run(creep);
-			//creep.say('h');			
+			creep.say('h');			
 		}
 		else if(i < max_creep_upgrader + max_creep_harvester) {
 			roleUpgrader.run(creep);	
-			//creep.say('u');		
+			creep.say('u');		
 		}
 		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
 			
 			roleBuilder.run(creep);
-			//creep.say('b');
+			creep.say('b');
 		}
 		//console.log(creep.ticksToLive);
 		//creep.say(i);

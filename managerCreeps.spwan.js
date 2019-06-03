@@ -52,7 +52,7 @@ var main = {
                     nowEnergy += stru[i].energy;
                 }
             }
-
+        maxEnergy = 200;
         }
 
 
@@ -60,7 +60,7 @@ var main = {
 
         if (nowEnergy >= maxEnergy)
         {
-            spawn(len, numberMaxCreeps, figther);
+            spawn(len, numberMaxCreeps, false);
         }
         else
         {
@@ -76,7 +76,7 @@ function buildCreep(m, creepParts, pref, standard) {
     //var pref = [2, 0, 2, 0, 1];
     var aux = 0;
     var temp;
-    console.log('creepCost ' + creepCost + ' budget Energy: ' + m);
+    //console.log('budget Energy: ' + m);
     //m = 610;
 
 	var attempts = -pref.length;
@@ -87,7 +87,7 @@ function buildCreep(m, creepParts, pref, standard) {
 
         if (creepCost > m)
         {
-            console.log('dont add: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
+            //console.log('dont add: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
             creepCost -= temp.cost;
             if(attempts > 0){
 				break;
@@ -99,12 +99,12 @@ function buildCreep(m, creepParts, pref, standard) {
         else if (creepCost < m)
         {
             standard.push(temp.type);
-            console.log('add: ' + temp.type + '(' + pref[aux % pref.length] + ') total: ' + creepCost);
+            //console.log('add: ' + temp.type + '(' + pref[aux % pref.length] + ') total: ' + creepCost);
         }
         else if (creepCost == m)
         {
             standard.push(temp.type);
-            console.log('add final: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
+            //console.log('add final: ' + temp.type + ' for ' + temp.cost + ' total: ' + creepCost);
             break;
         }
         aux++;
@@ -117,7 +117,7 @@ function spawn(now, numberMaxCreeps, figther) {
     var auxN = 0;
     if (now < numberMaxCreeps)
     {
-		console.log('++++++++++++++++++++++');
+		//console.log('++++++++++++++++++++++');
         var cont = ERR_NAME_EXISTS;
         var n = ('creep_' + auxN);
         var newCreep;
@@ -140,8 +140,8 @@ function spawn(now, numberMaxCreeps, figther) {
 
                 if (cont == OK)
                 {
-                    console.log('Spawn: ' + n + ' ' + now + ' of ' + numberMaxCreeps);
-					console.log('++++++++++++++++++++++');
+                    //console.log('Spawn: ' + n + ' ' + now + ' of ' + numberMaxCreeps);
+					//console.log('++++++++++++++++++++++');
                     return true;
                 }
                 else if (cont == ERR_NAME_EXISTS)

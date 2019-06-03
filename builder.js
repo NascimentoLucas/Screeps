@@ -27,9 +27,15 @@ function harvest(creep){
 }
 
 function builder(creep){
-	if (!tool_builder.builder(creep)){	
-
-		if(!tool_delivery.upgrade_center(creep)){
+	if (!tool_builder.builder(creep)){			
+		if(creep.carry.energy > 0){
+			console.log(creep.name + ' builder to upgrader');
+			if(!tool_delivery.upgrade_center(creep)){
+				creep.memory.behaviour = _HARVEST;
+				creep.say('HARVEST');
+			}
+		}
+		else{
 			creep.memory.behaviour = _HARVEST;
 			creep.say('HARVEST');
 		}

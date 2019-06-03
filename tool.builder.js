@@ -128,6 +128,7 @@ function repair_at_minimum(creep, type, min){
 			return true;
 		}
 	}
+	
 	return false;
 }
 
