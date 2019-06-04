@@ -22,6 +22,19 @@ var roleHarvester = {
 				}
 			}
 		});
+	},	
+	is_above_flag(creep){
+		const look = creep.pos.look();
+		look.forEach(function(lookObject) {
+			if(lookObject.type == LOOK_FLAGS) {
+				
+				
+				for(var name in Game.spawns) {
+					return true;
+				}
+			}
+		});
+		return false;
 	}
 };
 module.exports = roleHarvester;

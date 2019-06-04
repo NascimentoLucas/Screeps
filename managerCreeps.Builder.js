@@ -90,9 +90,11 @@ var main = {
 					else if(r == ERR_INVALID_TARGET) {	
 						creep.say('lf');						
 					}
+					else if(r == OK) {	
+						creep.say('OK');				
+					}
 					else{			
 						//tool.moveMark(creep, builder.target);
-						tool.check_above_flag(creep);
 						creep.say('m' + r);
 					}
 					
