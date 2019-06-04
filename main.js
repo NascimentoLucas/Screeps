@@ -3,6 +3,7 @@ var roleUpgrader = require('upgrader');
 var roleBuilder = require('builder');
 var helper = require('helper');
 var managerCreepsSpwan = require('managerCreeps.spwan');
+var managerCreepsBuilder = require('managerCreeps.Builder');
 
 var all_creeps;
 
@@ -22,9 +23,9 @@ module.exports.loop = function () {
 	}
 	
 	tower();
-	
 	spawn_controll(creeps_length);
 	
+	managerCreepsBuilder.start();
 	behaviour_controll(creeps_length);
 	
 	clean();	
@@ -62,22 +63,21 @@ function behaviour_controll(creeps_length){
 		//creep.memory.count = i;
 		if(count < ammount_creep_harvester) {
 			roleHarvester.run(creep);
-			creep.say('h');			
+			//creep.say('h');			
 		}
 		else if(count < ammount_creep_harvester + ammount_creep_builder ) {
 			roleBuilder.run(creep);
-			creep.say('b');	
+			//creep.say('b');	
 		}
 		else {
 			
 			roleUpgrader.run(creep);	
-			creep.say('u');
+			//creep.say('u');
 			if(!(i < ammount_creep_harvester 
 					+ ammount_creep_builder
 					+ ammount_creep_upgrader)) {				
-				count = -1;
-				roleUpgrader.run(creep);	
-				creep.say('u');
+				count = -1;	
+				//creep.say('u');
 			}
 		}
 		//console.log(creep.ticksToLive);
