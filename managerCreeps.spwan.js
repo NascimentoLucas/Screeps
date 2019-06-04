@@ -12,7 +12,7 @@ var stru;
 
 var main = {
 
-    run: function (len, numberMaxCreeps, figther) {
+    run: function (len, numberMaxCreeps) {
 
         stru = Game.structures;
         maxEnergy = 0;
@@ -60,7 +60,7 @@ var main = {
 
         if (nowEnergy >= maxEnergy)
         {
-            spawn(len, numberMaxCreeps, false);
+            spawn(len, numberMaxCreeps);
         }
         else
         {
@@ -113,7 +113,7 @@ function buildCreep(m, creepParts, pref, standard) {
     return standard;
 }
 
-function spawn(now, numberMaxCreeps, figther) {	
+function spawn(now, numberMaxCreeps) {	
     var auxN = 0;
     if (now < numberMaxCreeps)
     {
@@ -122,7 +122,7 @@ function spawn(now, numberMaxCreeps, figther) {
         var n = ('creep_' + auxN);
         var newCreep;
 
-        if (figther)
+        if (Memory.figther)
         {
             newCreep = buildCreep(maxEnergy, creepFitherParts, prefFitherParts, [creepFitherParts[0].type, creepFitherParts[1].type, creepFitherParts[2].type]);
         }

@@ -166,7 +166,7 @@ function garbage(obj){
 }
 
 function spawn_controll(creeps_length){
-	managerCreepsSpwan.run(creeps_length, max_creep, false);
+	managerCreepsSpwan.run(creeps_length, max_creep);
 }
 
 function defendRoom(roomName) {
