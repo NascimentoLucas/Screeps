@@ -15,8 +15,7 @@ var roleHarvester = {
 			if(lookObject.type == LOOK_FLAGS) {
 				
 				
-				for(var name in Game.spawns) {		
-			    	creep.move(LEFT);
+				for(var name in Game.spawns) {
 					creep.moveTo(Game.spawns[name], {visualizePathStyle: {stroke: '#ffaa00'}});
 				    //console.log(creep.name + ' moving to mainSpawn ' + Game.spawns[name].pos);
 					break;

@@ -10,7 +10,7 @@ var all_creeps;
 var max_creep = 20;
 var ammount_creep_harvester = 3;
 var ammount_creep_upgrader = 2;
-var ammount_creep_builder = 3;
+var ammount_creep_builder = 5;
 var creeps_length;
 
 module.exports.loop = function () {	

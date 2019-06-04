@@ -91,7 +91,9 @@ var main = {
 						creep.say('lf');						
 					}
 					else{			
-						creep.say('m' + main.count);
+						//tool.moveMark(creep, builder.target);
+						tool.check_above_flag(creep);
+						creep.say('m' + r);
 					}
 					
 					main.count++;
