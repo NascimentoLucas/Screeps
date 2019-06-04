@@ -17,7 +17,8 @@ var main = {
 			if(!target){
 				target = Game.rooms['E15S18'].controller.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: (structure) => {
-							return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) 
+							return (structure.structureType == STRUCTURE_EXTENSION 
+							|| structure.structureType == STRUCTURE_SPAWN) 
 							&& structure.energy < structure.energyCapacity;
 						}
 				});

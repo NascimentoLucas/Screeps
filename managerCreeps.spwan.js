@@ -136,7 +136,14 @@ function spawn(now, numberMaxCreeps) {
         {
             while (cont == ERR_NAME_EXISTS)
             {
-                cont = Game.spawns[i].spawnCreep(newCreep, n, {memory: {behaviour: 0}});
+                cont = Game.spawns[i].spawnCreep(newCreep, n, 
+				{
+					memory: {
+						behaviour: 0,
+						actualBehaviour : -1
+						}
+				}
+				);
 
                 if (cont == OK)
                 {

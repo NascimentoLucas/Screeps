@@ -19,13 +19,15 @@ const preferenceWork = [
 	get_builder_command(repair_rampart, 100),
 	get_builder_command(find_structure_to_construct, STRUCTURE_RAMPART),
 	
+	get_builder_command(find_structure_to_repair, STRUCTURE_ROAD),
+	
 	get_builder_command(find_structure_to_construct, STRUCTURE_WALL),
-	get_builder_command(find_structure_to_construct, STRUCTURE_TOWER),
-	get_builder_command(find_structure_to_construct, STRUCTURE_EXTENSION),
+	get_builder_command(find_structure_to_construct, STRUCTURE_TOWER),	
 	get_builder_command(find_structure_to_construct, STRUCTURE_ROAD),
+		
+	get_builder_command(find_structure_to_construct, STRUCTURE_EXTENSION),
 	
 	get_builder_command(find_structure_to_repair, STRUCTURE_RAMPART),
-	get_builder_command(find_structure_to_repair, STRUCTURE_ROAD),
 	get_builder_command(find_structure_to_repair, STRUCTURE_TOWER),
 	get_builder_command(find_structure_to_repair, STRUCTURE_WALL),
 ];
@@ -34,18 +36,34 @@ var main = {
 
     /** @param {Creep} creep **/
     builder: function(creep) {
-		
 		if(creep.carry.energy > 0){
-			tool.check_above_flag(creep);			
 			
-			for (var i = 0; i < preferenceWork.length; i++)
-			{	
-				if(preferenceWork[i].command(creep)){					
-					return true;
+			if(creep.memory.actualBehaviour == -1){
+			
+				tool.check_above_flag(creep);			
+				
+				for (var i = 0; i < preferenceWork.length; i++)
+				{	
+					if(preferenceWork[i].command(creep)){	
+						creep.memory.actualBehaviour = i;
+						creep.say('o: ' + creep.memory.actualBehaviour);
+						return true;
+					}
 				}
-			}
 			
-			return repair_or_build(creep);
+				return repair_or_build(creep);
+			}
+			else{
+				
+				if(preferenceWork[creep.memory.actualBehaviour].command(creep)){
+					creep.say('b: ' + creep.memory.actualBehaviour);
+				}
+				else{
+					creep.memory.actualBehaviour = -1;
+				}
+				
+				return true;
+			}
 			
 		}	
 		
@@ -58,21 +76,37 @@ function find_structure_to_repair(creep, type) {
 	if(creep != null){
 		var target;
 		
-		target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-			filter: (structure) => {
-				return (structure.structureType == type &
-						(structure.hits < structure.hitsMax));
+		for(var flagName in Memory.purpleFlags){
+			try{
+				var flag = Game.flags[Memory.purpleFlags[flagName]];
+				if(flag.color == COLOR_PURPLE){
+					target = flag.pos.findClosestByRange(FIND_STRUCTURES, {
+						filter: (structure) => {
+							return (structure.structureType == type &
+									(structure.hits < structure.hitsMax));
+						}
+					});
+					
+					if(target != null){				
+						
+						var r = creep.repair(target);
+						if(r == ERR_NOT_IN_RANGE) {
+							tool.moveMark(creep, target);
+						}
+						else if(r == OK) {
+							creep.say('OK');
+							if (!(target.hits < target.hitsMax/0)){
+								console.log(target.hits == target.hitsMax);
+							}
+						}
+						
+						return true;
+					}
+				}
 			}
-		});
-		
-		if(target != null){				
+			catch(err){				
 			
-			var r = creep.repair(target);
-			if(r == ERR_NOT_IN_RANGE) {
-				tool.moveTo(creep, target);
 			}
-			
-			return true;
 		}
 	}
 	
@@ -123,7 +157,7 @@ function repair_at_minimum(creep, type, min){
 		if(target != null){				
 		
 			if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-				tool.moveTo(creep, target);
+				tool.moveMark(creep, target);
 			}
 			return true;
 		}
@@ -147,7 +181,7 @@ function repair_or_build(creep) {
     if(target != null){				
 	
 		if(creep.build(target) == ERR_NOT_IN_RANGE) {
-			tool.moveTo(creep, target);
+			tool.moveMark(creep, target);
 		}
 		return true;
 	}
@@ -161,7 +195,7 @@ function repair_or_build(creep) {
     if(target != null){				
 	
 		if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-			tool.moveTo(creep, target);
+			tool.moveMark(creep, target);
 		}
 		return true;
 	}
