@@ -6,10 +6,10 @@ var managerCreepsSpwan = require('managerCreeps.spwan');
 
 var all_creeps;
 
-var max_creep = 30;
-var max_creep_harvester = max_creep * 0.4;
-var max_creep_upgrader = max_creep * 0.2;
-var max_creep_builder = max_creep * 0.4;
+var max_creep = 20;
+var ammount_creep_harvester = 3;
+var ammount_creep_upgrader = 2;
+var ammount_creep_builder = 3;
 var creeps_length;
 
 module.exports.loop = function () {	
@@ -29,6 +29,64 @@ module.exports.loop = function () {
 	
 	clean();	
 }
+
+function behaviour_controll(creeps_length){
+	
+	all_creeps = [];
+	
+	for(var name in Game.creeps) {
+		all_creeps.push(name);
+	}
+	
+	var lowest;
+	var actual;
+	for(var i = 0; i < all_creeps.length; i++){		
+		lowest = Game.creeps[all_creeps[i]].ticksToLive;
+		for(var j = i; j < all_creeps.length; j++){
+			actual = Game.creeps[all_creeps[j]].ticksToLive;
+			
+			if(actual < lowest){
+				Game.creeps[all_creeps[i]].ticksToLive = actual;
+				Game.creeps[all_creeps[j]].ticksToLive = lowest;
+			}
+			
+			lowest = Game.creeps[all_creeps[i]].ticksToLive;
+		}
+	}
+	
+	count = 0;
+	for(var i = 0; i < all_creeps.length; i++){	
+        var creep = Game.creeps[all_creeps[i]];
+		
+		
+		//creep.memory.count = i;
+		if(count < ammount_creep_harvester) {
+			roleHarvester.run(creep);
+			creep.say('h');			
+		}
+		else if(count < ammount_creep_harvester + ammount_creep_builder ) {
+			roleBuilder.run(creep);
+			creep.say('b');	
+		}
+		else {
+			
+			roleUpgrader.run(creep);	
+			creep.say('u');
+			if(!(i < ammount_creep_harvester 
+					+ ammount_creep_builder
+					+ ammount_creep_upgrader)) {				
+				count = -1;
+				roleUpgrader.run(creep);	
+				creep.say('u');
+			}
+		}
+		//console.log(creep.ticksToLive);
+		//creep.say(i);
+		count++;
+    }
+	
+}
+
 
 function tower(){
 	var tower;
@@ -109,54 +167,6 @@ function garbage(obj){
 
 function spawn_controll(creeps_length){
 	managerCreepsSpwan.run(creeps_length, max_creep, false);
-}
-
-function behaviour_controll(creeps_length){
-	
-	all_creeps = [];
-	
-	for(var name in Game.creeps) {
-		all_creeps.push(name);
-	}
-	
-	var lowest;
-	var actual;
-	for(var i = 0; i < all_creeps.length; i++){		
-		lowest = Game.creeps[all_creeps[i]].ticksToLive;
-		for(var j = i; j < all_creeps.length; j++){
-			actual = Game.creeps[all_creeps[j]].ticksToLive;
-			
-			if(actual < lowest){
-				Game.creeps[all_creeps[i]].ticksToLive = actual;
-				Game.creeps[all_creeps[j]].ticksToLive = lowest;
-			}
-			
-			lowest = Game.creeps[all_creeps[i]].ticksToLive;
-		}
-	}
-	
-	for(var i = 0; i < all_creeps.length; i++){	
-        var creep = Game.creeps[all_creeps[i]];
-		
-		
-		//creep.memory.count = i;
-		if(i < max_creep_harvester) {
-			roleHarvester.run(creep);
-			creep.say('h');			
-		}
-		else if(i < max_creep_upgrader + max_creep_harvester) {
-			roleUpgrader.run(creep);	
-			creep.say('u');		
-		}
-		else{ //if(i < max_creep_builder + max_creep_upgrader + max_creep_harvester) {
-			
-			roleBuilder.run(creep);
-			creep.say('b');
-		}
-		//console.log(creep.ticksToLive);
-		//creep.say(i);
-    }
-	
 }
 
 function defendRoom(roomName) {
