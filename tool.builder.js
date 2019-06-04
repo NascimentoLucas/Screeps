@@ -56,7 +56,7 @@ var main = {
 			else{
 				
 				if(preferenceWork[creep.memory.actualBehaviour].command(creep)){
-					creep.say('b: ' + creep.memory.actualBehaviour);
+					//creep.say('b: ' + creep.memory.actualBehaviour);
 				}
 				else{
 					creep.memory.actualBehaviour = -1;

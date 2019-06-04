@@ -25,7 +25,6 @@ module.exports.loop = function () {
 	tower();
 	spawn_controll(creeps_length);
 	
-	managerCreepsBuilder.start();
 	behaviour_controll(creeps_length);
 	
 	clean();	
@@ -56,6 +55,8 @@ function behaviour_controll(creeps_length){
 	}
 	
 	count = 0;
+	managerCreepsBuilder.start(creeps_length);
+	
 	for(var i = 0; i < all_creeps.length; i++){	
         var creep = Game.creeps[all_creeps[i]];
 		
@@ -66,8 +67,8 @@ function behaviour_controll(creeps_length){
 			//creep.say('h');			
 		}
 		else if(count < ammount_creep_harvester + ammount_creep_builder ) {
-			roleBuilder.run(creep);
-			//creep.say('b');	
+			creep.say('b');	
+			roleBuilder.run(creep, managerCreepsBuilder);
 		}
 		else {
 			
@@ -84,6 +85,7 @@ function behaviour_controll(creeps_length){
 		//creep.say(i);
 		count++;
     }
+	managerCreepsBuilder.reset();
 	
 }
 
@@ -146,7 +148,7 @@ function garbage(obj){
 			});
 			
 			if(creep){
-				creep.say('garbage');
+				//creep.say('garbage');
 				var r = creep.pickup(droppped);
 				if(r == OK){
 					//console.log(creep.name + ' clean floor at: ' + droppped.pos.x + '/' 
