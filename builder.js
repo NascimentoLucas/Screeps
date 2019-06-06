@@ -1,5 +1,6 @@
 var tool_harvester = require('tool.harvester');
 var tool_delivery = require('tool.delivery');
+var tool_builder = require('tool.builder');
 var _HARVEST = 0;
 var _BUILDER = 1;
 
@@ -26,8 +27,8 @@ function harvest(creep, managerCreepsBuilder){
 }
 
 function builder(creep, managerCreepsBuilder){
-	var b = managerCreepsBuilder.run(creep);
-	
+	//var b = managerCreepsBuilder.run(creep);
+	var b = tool_builder.builder(creep);
 	if (!b){			
 		if(creep.carry.energy > 0){
 			//console.log(creep.name + ' builder to upgrader');

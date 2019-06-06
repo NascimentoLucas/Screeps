@@ -7,7 +7,7 @@ var managerCreepsBuilder = require('managerCreeps.Builder');
 
 var all_creeps;
 
-var max_creep = 20;
+var max_creep = Memory.max + 1;
 var ammount_creep_harvester = 3;
 var ammount_creep_upgrader = 2;
 var ammount_creep_builder = 5;

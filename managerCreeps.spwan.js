@@ -147,8 +147,8 @@ function spawn(now, numberMaxCreeps) {
 
                 if (cont == OK)
                 {
-					if(Memory.max < now){
-						Memory.max = now;
+					if(Memory.max < now + 1){
+						Memory.max = now + 1;
 					}
                     //console.log('Spawn: ' + n + ' ' + now + ' of ' + numberMaxCreeps);
 					//console.log('++++++++++++++++++++++');

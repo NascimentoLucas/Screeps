@@ -73,39 +73,37 @@ var main = {
 			var builder = main.bt[main.count];
 			if(builder){
 				var r = builder.run(creep);
-				var start = main.count - 1;
-				do {					
+				
+				if(r == ERR_NOT_IN_RANGE) {
+					tool.moveMark(creep, builder.target);
+					creep.say('gt' + builder.target.pos.x + '/' 
+								+ builder.target.pos.y);
 					
-					if(start == main.count){
-						creep.say('bad');
-						return false;
-					}
-					
-					if(r == ERR_NOT_IN_RANGE) {
-						tool.moveMark(creep, builder.target);
-						creep.say('gt' + builder.target.pos.x + '/' 
-									+ builder.target.pos.y);
+				}
+				else if(r == ERR_INVALID_TARGET) {	
+					creep.say('lf');
+					return false;
+				}
+				else if(r == OK) {	
+					if(builder.target.hits == builder.target.hitsMax){
 						
+						return true;
 					}
-					else if(r == ERR_INVALID_TARGET) {	
-						creep.say('lf');						
-					}
-					else if(r == OK) {	
-						creep.say('OK');				
-					}
-					else{			
-						//tool.moveMark(creep, builder.target);
-						creep.say('m' + r);
-					}
-					
-					main.count++;
-					if( main.count > main.bt.length - 1){
-						main.count = 0;
+					else{						
+						creep.say('ok');
+						return true;
 					}
 				}
-				while(r == ERR_INVALID_TARGET);
+				else{			
+					//tool.moveMark(creep, builder.target);
+					creep.say('m' + r);
+				}
 				
-				
+				main.count++;
+				if( main.count > main.bt.length - 1){
+					main.count = 0;
+				}
+
 			}
 			else{
 				return false;
@@ -178,7 +176,7 @@ function find_structure_to_repair(group, type){
 
 function set_structures_to_repair() {
 	var targets = [];
-	var c = 0;
+	
 	for(var flagName in Memory.purpleFlags){
 		
 		try{
@@ -186,14 +184,13 @@ function set_structures_to_repair() {
 			
 			var t = flag.pos.findInRange(FIND_STRUCTURES, 1000, {
 				filter: (structure) => {
-					return structure.hits < structure.hitsMax;
+					return structure.hits < structure.hitsMax * 0.8;
 				}
 			});
 			
 			if(t != null){							
 				for(var name in t) {
 					targets.push(t[name]);
-					c++;
 				}
 			}
 		}
@@ -211,6 +208,10 @@ function get_constructionSites(){
 
 function get_structures_to_repair(){
 	return main.sr;
+}
+
+function get_max(){
+	return 20;
 }
 
 module.exports = main;
